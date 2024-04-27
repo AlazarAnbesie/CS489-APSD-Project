@@ -23,7 +23,7 @@ jobs:
             distribution: 'adopt'
             java-version: '17'
         - name: Build with Maven
-          run: mvn -B package --file CarRentalManagementSystem/pom.xml
+          run: mvn -B package -DskipTests --file CarRentalManagementSystem/pom.xml
         - name: Publish to GitHub Packages
           run: mvn deploy -s .github/settings.xml
           env:
