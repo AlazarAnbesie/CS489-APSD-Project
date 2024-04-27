@@ -1,0 +1,29 @@
+version: "3.8"
+services:
+  car-rental-db:
+    image: mysql:5.7
+    container_name: car-rental-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: car_rental
+      MYSQL_PASSWORD: root
+    ports:
+      - "3307:3306"
+    volumes:
+        - car-rental-db:/var/lib/mysql
+  car-rental-app:
+    build: .
+    container_name: car-rental-app
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      - car-rental-db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://car-rental-db:3306/car_rental
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+#create a volume for the database
+volumes:
+  car-rental-db:
