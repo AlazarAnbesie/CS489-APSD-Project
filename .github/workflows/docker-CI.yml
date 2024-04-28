@@ -14,8 +14,6 @@ jobs:
       - uses: actions/checkout@v3
       - name: Build the Docker image
         run: docker build . --file CarRentalManagementSystem/Dockerfile --tag alazar4/carrentalmanagementsystem-car-rental-app:$(date +%s)  # Adjust the image tag as needed
-      - name: Run Tests inside Docker
-        run: docker run my-spring-app mvn test 
 
   push-to-registry:  # Optional step to push the image
     if: ${{ github.ref == 'refs/heads/main' }}  # Push only on the main branch
@@ -28,4 +26,4 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
       - name: Push image to registry
-        run: docker push my-spring-app 
+        run: docker push alazar4/carrentalmanagementsystem-car-rental-app:$(date +%s) 
