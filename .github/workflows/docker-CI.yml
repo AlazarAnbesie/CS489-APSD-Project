@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Build the Docker image
-        run: docker build . -t docker build . --file CarRentalManagementSystem/Dockerfile --tag alazar4/carrentalmanagementsystem-car-rental-app:$(date +%s)  # Adjust the image tag as needed
+        run: docker build . --file CarRentalManagementSystem/Dockerfile --tag alazar4/carrentalmanagementsystem-car-rental-app:$(date +%s)  # Adjust the image tag as needed
       - name: Run Tests inside Docker
         run: docker run my-spring-app mvn test 
 
