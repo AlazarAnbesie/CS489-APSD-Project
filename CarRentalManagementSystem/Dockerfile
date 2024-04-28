@@ -1,8 +1,8 @@
 FROM maven:3.8.3-openjdk-17 AS build
 
-WORKDIR /app
+WORKDIR /app/CarRentalManagementApp
 
-COPY . ./app
+COPY . .
 
 RUN mvn clean package -DskipTests
 
