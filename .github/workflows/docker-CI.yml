@@ -1,23 +1,56 @@
 
+# name: Docker CI
+
+# on:
+#   push:
+#     branches: [ main ]  
+#   pull_request:
+#     branches: [ main ]  
+
+# jobs:
+#   build-and-test:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v3
+#       - name: Build the Docker image
+#         run: docker build . --file CarRentalManagementSystem/Dockerfile --tag alazar4/carrentalmanagementsystem-car-rental-app:$(date +%s)  # Adjust the image tag as needed
+#       - name: List Docker images
+#         run: docker images
+#   push-to-registry:  # Optional step to push the image
+#     if: ${{ github.ref == 'refs/heads/main' }}  # Push only on the main branch
+#     needs: build-and-test 
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Log in to Docker Hub (or your registry)
+#         uses: docker/login-action@v2
+#         with:
+#           username: ${{ secrets.DOCKER_USERNAME }}
+#           password: ${{ secrets.DOCKER_PASSWORD }}
+#       - name: Push image to registry
+#         run: docker push alazar4/carrentalmanagementsystem-car-rental-app:latest
 name: Docker CI
 
 on:
   push:
-    branches: [ main ]  
+    branches: [ main ]
   pull_request:
-    branches: [ main ]  
+    branches: [ main ]
 
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Set the tag name
+        id: prep
+        run: echo "::set-output name=tag::$(date +%s)"
       - name: Build the Docker image
-        run: docker build . --file CarRentalManagementSystem/Dockerfile --tag alazar4/carrentalmanagementsystem-car-rental-app:$(date +%s)  # Adjust the image tag as needed
-      - name: List Docker images
-        run: docker images
+        run: docker build . --file CarRentalManagementSystem/Dockerfile --tag alazar4/carrentalmanagementsystem-car-rental-app:${{ steps.prep.outputs.tag }}
+
   push-to-registry:  # Optional step to push the image
-    if: ${{ github.ref == 'refs/heads/main' }}  # Push only on the main branch
+    if: github.ref == 'refs/heads/main'  # Push only on the main branch
     needs: build-and-test 
     runs-on: ubuntu-latest
     steps:
@@ -27,4 +60,4 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
       - name: Push image to registry
-        run: docker push alazar4/carrentalmanagementsystem-car-rental-app:latest
+        run: docker push alazar4/carrentalmanagementsystem-car-rental-app:${{ needs.build-and-test.outputs.tag }}
