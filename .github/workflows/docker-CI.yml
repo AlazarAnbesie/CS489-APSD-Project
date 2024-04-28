@@ -27,4 +27,4 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
       - name: Push image to registry
-        run: docker push alazar4/carrentalmanagementsystem-car-rental-app
+        run: docker push alazar4/carrentalmanagementsystem-car-rental-app:latest
