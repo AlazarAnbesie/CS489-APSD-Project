@@ -10,8 +10,8 @@ RUN mvn clean package -DskipTests
 
 FROM openjdk:17
 
-WORKDIR /app
+WORKDIR /app/CarRentalManagementSystem
 
-COPY --from=build /app/target/*.jar /app/CarRentalManagementApp.jar
+COPY --from=build /app/CarRentalManagementSystem/target/*.jar /app/CarRentalManagementApp.jar
 
 CMD ["java", "-jar", "/app/CarRentalManagementApp.jar"]
